@@ -1,0 +1,5 @@
+node_modules/
+work/
+.env
+npm-debug.log*
+coverage/
