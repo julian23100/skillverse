@@ -228,6 +228,51 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 .toast { padding: 12px 15px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--cyan); border-radius: 7px; box-shadow: var(--shadow); font-size: .85rem; }
 .toast.error { border-left-color: var(--danger); }
 
+.challenge-summary { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-top: 22px; color: var(--cyan); font-size: .84rem; }
+.challenge-playground { display: grid; grid-template-columns: minmax(260px, .72fr) minmax(0, 1.28fr); gap: 18px; align-items: stretch; }
+.simulator-controls, .simulator-visual { padding: 26px; }
+.simulator-controls > .choice { display: block; margin: 9px 0; }
+.simulator-control { display: grid; grid-template-columns: 1fr auto; gap: 8px 14px; align-items: center; margin: 18px 0; color: var(--muted); font-size: .86rem; }
+.simulator-control input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--cyan); }
+.simulator-control output { color: var(--cyan); font: .82rem ui-monospace, monospace; }
+.simulator-actions { margin-top: 20px; }
+.simulator-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 16px 0; }
+.simulator-form-grid .form-control { margin-top: 6px; }
+.challenge-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.challenge-explanation { margin-top: 18px; padding: 20px; background: rgba(117, 201, 160, .08); border: 1px solid rgba(117, 201, 160, .3); border-radius: var(--radius); }
+.simulator-svg { display: block; width: 100%; min-height: 260px; margin-top: 10px; background: #111a27; border: 1px solid var(--border); border-radius: 10px; }
+.sim-axis { stroke: #52637a; stroke-width: 1; }
+.sim-target { fill: var(--violet); }
+.sim-path { fill: none; stroke: var(--cyan); stroke-width: 3; stroke-linecap: round; }
+.sim-player { fill: var(--success); stroke: #d5f2e4; stroke-width: 2; }
+.sim-label { fill: var(--violet); font-size: 10px; }
+.visual-caption-row { display: flex; justify-content: space-between; gap: 12px; color: var(--cyan); font-size: .8rem; }
+.door-scene { min-height: 310px; display: grid; align-content: center; gap: 22px; }
+.door-frame { position: relative; display: flex; justify-content: center; align-items: center; height: 190px; overflow: hidden; background: #111a27; border: 8px solid #52637a; border-bottom-width: 12px; border-radius: 8px 8px 3px 3px; }
+.door-panel { position: absolute; top: 0; bottom: 0; width: 50%; background: var(--violet); border: 2px solid #d1c9ff; transition: transform .2s ease; }
+.door-left { left: 0; transform-origin: left; }
+.door-right { right: 0; transform-origin: right; }
+.door-state { position: relative; z-index: 1; padding: 8px 11px; color: var(--text); background: rgba(16, 23, 34, .82); border: 1px solid var(--border); border-radius: 999px; font-size: .8rem; }
+.sensor-row, .balance-moments { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: .82rem; }
+.sensor-on, .logic-on { color: var(--success) !important; }
+.secret-output { min-height: 310px; display: grid; align-content: center; gap: 16px; }
+.secret-number { color: var(--cyan); font-size: clamp(3rem, 9vw, 5rem); font-weight: 750; line-height: 1; }
+.sample-table { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; padding: 16px; background: #111a27; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: .84rem; }
+.sample-table strong { color: var(--cyan); font-weight: 650; }
+.logic-circuit { min-height: 310px; display: grid; grid-template-columns: 1fr 1.2fr 1fr; align-items: center; gap: 14px; }
+.logic-inputs { display: grid; gap: 12px; }
+.logic-inputs span, .logic-gate, .logic-output { display: grid; place-items: center; min-height: 62px; padding: 10px; background: #111a27; border: 1px solid var(--border); border-radius: 9px; color: var(--muted); font: .8rem ui-monospace, monospace; text-align: center; }
+.logic-gate { color: var(--violet); border-color: rgba(169, 154, 239, .45); }
+.logic-output { color: var(--danger); }
+.logic-output.logic-on { color: var(--success); border-color: rgba(117, 201, 160, .55); }
+.balance-visual { min-height: 310px; display: grid; align-content: center; gap: 12px; }
+.balance-bar { position: relative; height: 12px; margin: 80px 5% 0; background: var(--cyan); border-radius: 999px; transition: transform .2s ease; }
+.balance-bar::before { content: ''; position: absolute; inset: 50% 0 auto; height: 2px; background: rgba(255,255,255,.35); }
+.balance-pivot { width: 0; height: 0; margin: -3px auto 55px; border-right: 22px solid transparent; border-bottom: 44px solid var(--violet); border-left: 22px solid transparent; }
+.weight { position: absolute; top: -54px; padding: 8px 10px; color: var(--bg); background: var(--success); border-radius: 7px; font-size: .72rem; font-weight: 700; white-space: nowrap; }
+.weight-right { background: var(--violet); }
+.debug-code { min-height: 310px; margin: 0; }
+
 @media (max-width: 980px) {
   .main-nav > a:not(.button) { padding-inline: 6px; font-size: .82rem; }
   .nav-divider { margin-inline: 3px; }
@@ -244,7 +289,7 @@ textarea.form-control { min-height: 120px; resize: vertical; }
   .main-nav > a:not(.button) { padding: 10px; }
   .main-nav .button { width: 100%; }
   .nav-divider { display: none; }
-  .hero-grid, .auth-wrap, .lab-grid, .detail-layout { grid-template-columns: 1fr; }
+  .hero-grid, .auth-wrap, .lab-grid, .detail-layout, .challenge-playground { grid-template-columns: 1fr; }
   .hero-grid { min-height: auto; padding: 64px 0; }
   .hero-visual { order: -1; }
   .hero-copy h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); }
@@ -256,7 +301,7 @@ textarea.form-control { min-height: 120px; resize: vertical; }
   .step:last-child { border-bottom: 0; }
   .step h3 { margin-top: 18px; }
   .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-  .choice-grid, .pricing-grid { grid-template-columns: 1fr; }
+  .choice-grid, .pricing-grid, .simulator-form-grid { grid-template-columns: 1fr; }
   .pricing-grid { max-width: 520px; }
   .auth-wrap { gap: 30px; min-height: auto; padding: 50px 0 70px; }
   .auth-pitch h1 { font-size: 3rem; }
