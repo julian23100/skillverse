@@ -43,3 +43,13 @@ test('depura el sistema simula la secuencia segura esperada', () => {
   assert.equal(engine.evaluateDebug({ initial: '0', condition: '<', increment: 'i++', operation: 'total += i' }).isCorrect, true);
   assert.equal(engine.evaluateDebug({ initial: '0', condition: '<=', increment: 'i++', operation: 'total += i' }).isCorrect, false);
 });
+
+test('la secuencia explícita avanza al siguiente reto y termina en una ruta válida', () => {
+  assert.equal(engine.nextChallengeSlug('fisica-del-salto'), 'puerta-automatica');
+  assert.equal(engine.nextChallengeSlug('depura-el-sistema'), null);
+  assert.deepEqual(engine.challengeSequenceProgress(['fisica-del-salto', 'algoritmo-secreto']), {
+    completed: ['fisica-del-salto', 'algoritmo-secreto'],
+    total: 6,
+    current: 'puerta-automatica'
+  });
+});
