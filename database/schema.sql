@@ -1,5 +1,10 @@
+-- SkillVerse · esquema base de producción
+-- Ejecuta este archivo con un usuario administrador de MySQL una sola vez.
+-- La aplicación usa el usuario de la app definido en .env y no necesita permisos DDL diarios.
 CREATE DATABASE IF NOT EXISTS skillverse CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE skillverse;
+SET NAMES utf8mb4;
+SET time_zone = '+00:00';
 
 CREATE TABLE IF NOT EXISTS users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -30,7 +35,8 @@ CREATE TABLE IF NOT EXISTS lessons (
   position SMALLINT UNSIGNED NOT NULL,
   estimated_minutes SMALLINT UNSIGNED NOT NULL DEFAULT 10,
   CONSTRAINT fk_lessons_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-  UNIQUE KEY uq_lesson_position (course_id, position)
+  UNIQUE KEY uq_lesson_position (course_id, position),
+  INDEX idx_lessons_course (course_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS exercises (
@@ -68,7 +74,8 @@ CREATE TABLE IF NOT EXISTS exercise_attempts (
   attempted_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_attempt_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   CONSTRAINT fk_attempt_exercise FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,
-  INDEX idx_attempt_user (user_id)
+  INDEX idx_attempt_user (user_id),
+  INDEX idx_attempt_exercise_time (exercise_id, attempted_at)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS user_stats (
@@ -93,7 +100,8 @@ CREATE TABLE IF NOT EXISTS user_achievements (
   unlocked_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, achievement_id),
   CONSTRAINT fk_user_ach_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-  CONSTRAINT fk_user_ach_achievement FOREIGN KEY (achievement_id) REFERENCES achievements(id) ON DELETE CASCADE
+  CONSTRAINT fk_user_ach_achievement FOREIGN KEY (achievement_id) REFERENCES achievements(id) ON DELETE CASCADE,
+  INDEX idx_user_achievements_achievement (achievement_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS subscriptions (
