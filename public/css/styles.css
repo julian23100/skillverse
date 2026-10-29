@@ -1,20 +1,21 @@
 :root {
-  --bg: #111720;
-  --surface: #171f2b;
-  --surface-2: #202b39;
-  --text: #ebf0f6;
-  --muted: #a6b2c1;
-  --border: #303d4d;
-  --cyan: #67c7cf;
-  --violet: #a69adc;
-  --success: #78c6a0;
-  --danger: #db8181;
+  --bg: #12131f;
+  --surface: #1b192b;
+  --surface-2: #28233a;
+  --text: #fff8ef;
+  --muted: #c0b8c9;
+  --border: #443b58;
+  --cyan: #f3b562;
+  --violet: #c9a7f5;
+  --success: #76d6ae;
+  --danger: #f18f9c;
   --max: 1180px;
   --radius: 12px;
-  --shadow: 0 12px 32px rgba(3, 7, 14, .2);
+  --shadow: 0 12px 32px rgba(7, 5, 15, .28);
 }
 
 * { box-sizing: border-box; }
+*[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 html.reduced-motion *, html.reduced-motion *::before, html.reduced-motion *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .001ms !important; }
 body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 16px; line-height: 1.6; }
@@ -34,7 +35,7 @@ main { flex: 1; }
 .skip-link { position: absolute; left: 12px; top: -50px; z-index: 20; padding: 8px 12px; background: var(--cyan); color: var(--bg); border-radius: 6px; }
 .skip-link:focus { top: 12px; }
 
-.topbar { position: sticky; top: 0; z-index: 10; background: rgba(17, 23, 32, .96); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
+.topbar { position: sticky; top: 0; z-index: 10; background: rgba(18, 19, 31, .96); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
 .topbar-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; min-width: max-content; }
 .logo-slot { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--cyan); color: var(--cyan); border-radius: 9px; font-weight: 800; letter-spacing: -.08em; }
@@ -54,8 +55,8 @@ main { flex: 1; }
 .button:disabled { cursor: not-allowed; opacity: .65; transform: none; }
 .button-small { min-height: 34px; padding: 6px 11px; font-size: .82rem; }
 .button-block { width: 100%; }
-.button-accent { background: var(--cyan); color: #111720; }
-.button-accent:hover { background: #7bd6df; }
+.button-accent { background: var(--cyan); color: #211827; }
+.button-accent:hover { background: #ffca7d; }
 .button-secondary { background: var(--surface-2); color: var(--text); border-color: var(--border); }
 .button-secondary:hover { border-color: var(--cyan); }
 .button-ghost { color: var(--cyan); border-color: var(--border); background: transparent; }
@@ -88,14 +89,22 @@ main { flex: 1; }
 .section-soft { background: var(--surface); border-block: 1px solid var(--border); }
 .section-head { display: flex; align-items: end; justify-content: space-between; gap: 32px; margin-bottom: 32px; }
 .section-head > p { max-width: 420px; margin: 0; color: var(--muted); }
-.benefit-grid, .course-grid, .challenge-grid, .dashboard-grid, .achievement-grid { display: grid; gap: 16px; }
+.benefit-grid, .course-grid, .challenge-grid, .dashboard-grid, .achievement-grid, .learning-track-grid { display: grid; gap: 16px; }
 .benefit-grid { grid-template-columns: repeat(4, 1fr); }
 .course-grid { grid-template-columns: repeat(4, 1fr); }
 .challenge-grid { grid-template-columns: repeat(3, 1fr); }
+.learning-track-grid { grid-template-columns: repeat(4, 1fr); }
 .dashboard-grid { grid-template-columns: repeat(4, 1fr); }
 .achievement-grid { grid-template-columns: repeat(4, 1fr); }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 22px rgba(3, 7, 14, .12); }
 .benefit-card, .course-card, .challenge-card, .stat-card, .achievement { padding: 22px; }
+.learning-track { min-height: 170px; padding: 22px; }
+.learning-track .lesson-index { display: block; margin-bottom: 28px; }
+.learning-track p { color: var(--muted); font-size: .9rem; }
+.learning-focus { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; margin: 0 auto; padding: 26px; }
+.focus-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.focus-list li { padding: 12px 14px; color: var(--text); background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; }
+.focus-list li::before { content: '→'; margin-right: 8px; color: var(--cyan); }
 .benefit-card p, .course-card p, .challenge-card p, .achievement p { color: var(--muted); font-size: .9rem; }
 .icon-box, .course-icon, .challenge-symbol, .achievement-icon { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 22px; border: 1px solid var(--border); border-radius: 8px; color: var(--cyan); font-weight: 750; }
 .benefit-card h3, .course-card h3, .challenge-card h3 { margin-bottom: 9px; }
@@ -244,6 +253,8 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 .simulator-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 16px 0; }
 .simulator-form-grid .form-control { margin-top: 6px; }
 .challenge-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.completion-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.completion-row + .completion-actions { margin-top: 14px; }
 .challenge-explanation { margin-top: 18px; padding: 20px; background: rgba(117, 201, 160, .08); border: 1px solid rgba(117, 201, 160, .3); border-radius: var(--radius); }
 .simulator-svg { display: block; width: 100%; min-height: 260px; margin-top: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
 .sim-axis { stroke: #52637a; stroke-width: 1; }
@@ -282,7 +293,7 @@ textarea.form-control { min-height: 120px; resize: vertical; }
   .main-nav > a:not(.button) { padding-inline: 6px; font-size: .82rem; }
   .nav-divider { margin-inline: 3px; }
   .hero-grid { gap: 35px; }
-  .benefit-grid, .course-grid { grid-template-columns: repeat(2, 1fr); }
+  .benefit-grid, .course-grid, .learning-track-grid { grid-template-columns: repeat(2, 1fr); }
   .achievement-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 760px) {
@@ -294,7 +305,7 @@ textarea.form-control { min-height: 120px; resize: vertical; }
   .main-nav > a:not(.button) { padding: 10px; }
   .main-nav .button { width: 100%; }
   .nav-divider { display: none; }
-  .hero-grid, .auth-wrap, .lab-grid, .detail-layout, .challenge-playground { grid-template-columns: 1fr; }
+  .hero-grid, .auth-wrap, .lab-grid, .detail-layout, .challenge-playground, .learning-focus { grid-template-columns: 1fr; }
   .hero-grid { min-height: auto; padding: 64px 0; }
   .hero-visual { order: -1; }
   .hero-copy h1 { font-size: clamp(2.55rem, 12vw, 4.2rem); }
@@ -314,7 +325,7 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 }
 @media (max-width: 480px) {
   h2 { font-size: 1.8rem; }
-  .benefit-grid, .course-grid, .challenge-grid, .dashboard-grid, .achievement-grid { grid-template-columns: 1fr; }
+  .benefit-grid, .course-grid, .challenge-grid, .dashboard-grid, .achievement-grid, .learning-track-grid { grid-template-columns: 1fr; }
   .toolbar { display: grid; align-items: stretch; }
   .filter-field { width: auto; }
   .course-card { min-height: 0; }
