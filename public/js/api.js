@@ -1,8 +1,9 @@
 async function request(path, options = {}) {
   const method = options.method || 'GET';
-  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  const { headers: optionHeaders = {}, ...requestOptions } = options;
+  const headers = { 'Content-Type': 'application/json', ...optionHeaders };
   if (method !== 'GET' && window.skillverseCsrfToken) headers['X-CSRF-Token'] = window.skillverseCsrfToken;
-  const response = await fetch(`/api${path}`, { credentials: 'same-origin', headers, ...options });
+  const response = await fetch(`/api${path}`, { ...requestOptions, credentials: 'same-origin', headers });
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(payload.error || 'No se pudo completar la solicitud.');
   if (payload.csrfToken) window.skillverseCsrfToken = payload.csrfToken;
