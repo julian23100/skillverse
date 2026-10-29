@@ -17,6 +17,7 @@ export const api = {
   courses: () => request('/courses'),
   courseLessons: (id) => request(`/courses/${id}/lessons`),
   lesson: (id) => request(`/lessons/${id}`),
+  exercise: (id) => request(`/exercises/${id}`),
   completeLesson: (id, score) => request(`/lessons/${id}/complete`, { method: 'POST', body: JSON.stringify({ score }) }),
   attempt: (id, answer) => request(`/exercises/${id}/attempt`, { method: 'POST', body: JSON.stringify({ answer }) }),
   stats: () => request('/stats'),
