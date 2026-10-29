@@ -45,6 +45,23 @@ export const challengeDefinitions = [
   }
 ];
 
+// Orden pedagógico explícito: la navegación no depende de títulos ni de IDs.
+export const challengeSequence = challengeDefinitions.map(({ slug }) => slug);
+
+export function nextChallengeSlug(slug) {
+  const index = challengeSequence.indexOf(slug);
+  return index >= 0 ? challengeSequence[index + 1] || null : null;
+}
+
+export function challengeSequenceProgress(completedSlugs = []) {
+  const completed = new Set(completedSlugs);
+  return {
+    completed: challengeSequence.filter((slug) => completed.has(slug)),
+    total: challengeSequence.length,
+    current: challengeSequence.find((slug) => !completed.has(slug)) || null
+  };
+}
+
 export const challengeDefaults = {
   'fisica-del-salto': { gravity: 9.8, initialVelocity: 12, horizontalVelocity: 5.5 },
   'puerta-automatica': { presenceSensor: true, safetySensor: true, motor: true, presence: false, obstacle: false, doorState: { phase: 'cerrada', progress: 0 } },
