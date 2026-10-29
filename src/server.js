@@ -6,7 +6,7 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const { connectDatabase, demoMode } = require('./config/database');
+const { connectDatabase, demoMode, getMysqlConfig } = require('./config/database');
 
 const authRoutes = require('./routes/auth.routes');
 const coursesRoutes = require('./routes/courses.routes');
@@ -22,7 +22,7 @@ app.disable('x-powered-by');
 app.use(helmet({ contentSecurityPolicy: { directives: { ...helmet.contentSecurityPolicy.getDefaultDirectives(), 'script-src': ["'self'"], 'style-src': ["'self'"], 'img-src': ["'self'", 'data:'] } } }));
 app.use(express.json({ limit: '50kb' }));
 app.use(express.urlencoded({ extended: false, limit: '20kb' }));
-const sessionStore = demoMode ? undefined : new MySQLStore({ host: process.env.MYSQL_HOST, port: Number(process.env.MYSQL_PORT || 3306), database: process.env.MYSQL_DATABASE, user: process.env.MYSQL_USER, password: process.env.MYSQL_PASSWORD, createDatabaseTable: true });
+const sessionStore = demoMode ? undefined : new MySQLStore({ ...getMysqlConfig(), createDatabaseTable: true });
 app.use(session({ ...(sessionStore ? { store: sessionStore } : {}), secret: process.env.SESSION_SECRET || 'dev-only-change-this-secret', resave: false, saveUninitialized: false, cookie: { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', maxAge: 1000 * 60 * 60 * 24 * 7 } }));
 app.use((req, res, next) => {
   if (!req.session.csrfToken) req.session.csrfToken = crypto.randomBytes(24).toString('hex');
