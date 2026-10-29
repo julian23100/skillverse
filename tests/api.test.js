@@ -35,6 +35,20 @@ test('un visitante puede consultar cursos públicos', async () => {
   assert.ok(payload.courses.length >= 8);
 });
 
+test('todas las rutas del catálogo tienen contenido de aprendizaje', async () => {
+  const { payload } = await request('/api/courses');
+  for (const course of payload.courses) {
+    const result = await request(`/api/courses/${course.id}/lessons`);
+    assert.equal(result.response.status, 200);
+    assert.ok(result.payload.lessons.length >= 3, `El curso ${course.id} debe tener al menos tres lecciones.`);
+    for (const lesson of result.payload.lessons) {
+      const lessonResult = await request(`/api/lessons/${lesson.id}`);
+      assert.equal(lessonResult.response.status, 200);
+      assert.equal(lessonResult.payload.lesson.course_id, course.id);
+    }
+  }
+});
+
 test('registro crea una cuenta con hash y protege los endpoints privados', async () => {
   const email = `${randomUUID()}@example.test`;
   const { response, payload } = await request('/api/auth/register', { method: 'POST', body: JSON.stringify({ username: 'tester', email, password: 'una-clave-segura', confirmPassword: 'una-clave-segura' }) });
