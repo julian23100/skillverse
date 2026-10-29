@@ -105,13 +105,6 @@ main { flex: 1; }
 .course-meta .course-icon { flex: 0 0 auto; width: 34px; height: 34px; margin: 0 5px 0 0; font-size: .76rem; }
 .premium-tag, .price-badge { display: inline-block; padding: 3px 8px; color: var(--violet); background: rgba(169, 154, 239, .1); border: 1px solid rgba(169, 154, 239, .35); border-radius: 999px; font-size: .68rem; }
 .xp { color: var(--cyan); font-size: .78rem; font-weight: 650; }
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); }
-.step { min-height: 190px; padding: 28px 28px 15px 0; border-right: 1px solid var(--border); }
-.step:not(:first-child) { padding-left: 28px; }
-.step:last-child { border-right: 0; }
-.step > span { color: var(--cyan); font: .8rem ui-monospace, monospace; }
-.step h3 { margin-top: 35px; }
-.step p { color: var(--muted); }
 .challenge-card { display: flex; gap: 17px; }
 .challenge-card .challenge-symbol { flex: 0 0 auto; }
 .challenge-card .button { margin-top: 10px; }
@@ -162,6 +155,9 @@ main { flex: 1; }
 .progress-track { height: 7px; margin-top: 16px; overflow: hidden; background: var(--border); border-radius: 999px; }
 .progress-fill { height: 100%; background: var(--cyan); border-radius: inherit; transition: width .35s ease; }
 .achievement-panel { margin-top: 22px; padding: 24px; }
+.challenge-progress-panel { margin-top: 22px; padding: 24px; }
+.challenge-progress-panel .section-head { margin-bottom: 16px; }
+.challenge-percent { color: var(--cyan); font: 700 1.35rem ui-monospace, monospace; }
 .achievement { min-height: 210px; background: var(--surface-2); }
 .achievement-icon { color: var(--violet); border-color: rgba(169, 154, 239, .45); font-size: 1.25rem; }
 .achievement.locked { opacity: .55; }
@@ -305,10 +301,6 @@ textarea.form-control { min-height: 120px; resize: vertical; }
   .section { padding: 62px 0; }
   .section-head { display: block; }
   .section-head > p { margin-top: 18px; }
-  .steps { display: block; }
-  .step, .step:not(:first-child) { min-height: auto; padding: 24px 0; border-right: 0; border-bottom: 1px solid var(--border); }
-  .step:last-child { border-bottom: 0; }
-  .step h3 { margin-top: 18px; }
   .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
   .choice-grid, .pricing-grid, .simulator-form-grid { grid-template-columns: 1fr; }
   .sequence-progress { grid-template-columns: 1fr; gap: 8px; }
