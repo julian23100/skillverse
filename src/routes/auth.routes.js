@@ -1,5 +1,5 @@
 const express = require('express');
-const { findUserByEmail, findUserById, registerUser, safeUser, verifyPassword } = require('../repositories/platform.repository');
+const { findUserByEmail, findUserById, findUserByUsername, registerUser, safeUser, verifyPassword } = require('../repositories/platform.repository');
 
 const router = express.Router();
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -13,6 +13,8 @@ router.post('/register', async (req, res, next) => {
     if (password !== confirmPassword) return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
     const existingEmail = await findUserByEmail(email);
     if (existingEmail) return res.status(409).json({ error: 'Ese correo ya está registrado.' });
+    const existingUsername = await findUserByUsername(username);
+    if (existingUsername) return res.status(409).json({ error: 'Ese nombre de usuario ya está en uso.' });
     const user = await registerUser({ username: username.trim(), email: email.trim(), password });
     req.session.userId = user.id; req.session.role = user.role;
     res.status(201).json({ user: safeUser(user), csrfToken: req.session.csrfToken });
