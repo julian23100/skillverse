@@ -36,10 +36,9 @@ const exerciseDefinitions = [
   ['Tipos en contexto', '¿Qué tipo de dato representa el texto "Alex"?', 'choice', { answer: 'texto' }, 'Está escrito entre comillas.', 'Un texto entre comillas es una cadena (string).', 10]
 ];
 
-const baseLessons = lessonTitles.map((title, index) => ({ id: index + 1, course_id: 1, title, objective: lessonContent[index][0], content: lessonContent[index][1], example_code: lessonContent[index][2], position: index + 1, estimated_minutes: 10 }));
-
-// El catálogo completo debe ser navegable incluso cuando Render trabaja en modo demo.
-// Cada ruta tiene tres microlecciones para que Aprender no termine en una tarjeta vacía.
+const lessons = lessonTitles.map((title, index) => ({ id: index + 1, course_id: 1, title, objective: lessonContent[index][0], content: lessonContent[index][1], example_code: lessonContent[index][2], position: index + 1, estimated_minutes: 10 }));
+// Cada curso público debe tener contenido navegable también en modo demo.
+// Estos micro-módulos mantienen la vista previa alineada con el catálogo MySQL.
 const learningModules = [
   { course_id: 2, lessons: [
     ['Sintaxis que da vida', 'Reconocer cómo una instrucción cambia el estado de una página.', 'JavaScript conecta datos, decisiones y acciones. Empieza leyendo de arriba abajo y nombra cada pieza con claridad.', 'const mensaje = "Hola";\nconsole.log(mensaje);'],
@@ -77,7 +76,6 @@ const learningModules = [
     ['Proyecto: colección de retos', 'Combinar arreglos, funciones y decisiones en una vista pequeña.', 'Una colección útil tiene datos claros, una transformación y un estado vacío pensado. Diseña primero el recorrido de la información.', 'const pendientes = retos.filter((reto) => !reto.completado);\nmostrar(pendientes);']
   ] }
 ];
-
 const extraLessons = learningModules.flatMap(({ course_id, lessons: moduleLessons }) => moduleLessons.map((lesson, index) => ({
   id: 11 + (course_id - 2) * 3 + index,
   course_id,
@@ -88,7 +86,7 @@ const extraLessons = learningModules.flatMap(({ course_id, lessons: moduleLesson
   position: index + 1,
   estimated_minutes: 10
 })));
-const lessons = [...baseLessons, ...extraLessons];
+const allLessons = [...lessons, ...extraLessons];
 const exercises = exerciseDefinitions.map((item, index) => ({ id: index + 1, lesson_id: index + 1 <= 10 ? index + 1 : 3, title: item[0], instructions: item[1], exercise_type: item[2], validation_json: item[3], hint: item[4], feedback: item[5], xp_reward: item[6], difficulty: 'Inicial' }));
 const achievements = [
   { id: 1, name: 'Primer paso', description: 'Completa tu primera lección.', icon: '✦' },
@@ -98,6 +96,6 @@ const achievements = [
   { id: 5, name: 'Constructor', description: 'Completa tu primer proyecto.', icon: '◆' }
 ];
 
-const store = { users: [], courses, lessons, exercises, achievements, progress: [], attempts: [], stats: new Map(), userAchievements: new Map(), nextUserId: 1 };
+const store = { users: [], courses, lessons: allLessons, exercises, achievements, progress: [], attempts: [], stats: new Map(), userAchievements: new Map(), nextUserId: 1 };
 
-module.exports = { store, courses, lessons, exercises, achievements };
+module.exports = { store, courses, lessons: allLessons, exercises, achievements };
