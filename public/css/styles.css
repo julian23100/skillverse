@@ -254,6 +254,11 @@ textarea.form-control { min-height: 120px; resize: vertical; }
 .simulator-form-grid .form-control { margin-top: 6px; }
 .challenge-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 .completion-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.completion-actions.course-finished { display: block; padding: 18px; border: 1px solid rgba(243, 181, 98, .35); border-radius: var(--radius); background: rgba(243, 181, 98, .06); }
+.completion-actions.course-finished .inline-actions { margin-top: 10px; }
+.language-challenge-visual { min-height: 100%; padding: 24px; border-radius: var(--radius); background: linear-gradient(145deg, rgba(243, 181, 98, .12), rgba(117, 201, 160, .08)); }
+.language-challenge-visual .challenge-symbol { margin-bottom: 14px; }
+.language-challenge-visual .code-block { margin-top: 18px; white-space: pre-wrap; }
 .completion-row + .completion-actions { margin-top: 14px; }
 .challenge-explanation { margin-top: 18px; padding: 20px; background: rgba(117, 201, 160, .08); border: 1px solid rgba(117, 201, 160, .3); border-radius: var(--radius); }
 .simulator-svg { display: block; width: 100%; min-height: 260px; margin-top: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
