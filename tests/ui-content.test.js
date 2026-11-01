@@ -22,6 +22,10 @@ test('las secciones de aprendizaje comparten retos navegables', () => {
 test('las lecciones y retos ofrecen continuar y salir al completar', () => {
   assert.match(appSource, /data-lesson-completion/);
   assert.match(appSource, /Continuar a la siguiente lección/);
+  assert.match(appSource, /Continuar al siguiente curso/);
+  assert.match(appSource, /completeCurrentLesson/);
+  assert.match(appSource, /nextCourseFor/);
+  assert.match(appSource, /course-finished/);
   assert.match(appSource, /function challengeCompletionActions/);
   assert.match(appSource, /data-challenge-completion/);
   assert.match(appSource, />Salir</);
