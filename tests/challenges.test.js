@@ -46,10 +46,20 @@ test('depura el sistema simula la secuencia segura esperada', () => {
 
 test('la secuencia explícita avanza al siguiente reto y termina en una ruta válida', () => {
   assert.equal(engine.nextChallengeSlug('fisica-del-salto'), 'puerta-automatica');
-  assert.equal(engine.nextChallengeSlug('depura-el-sistema'), null);
+  assert.equal(engine.nextChallengeSlug('reto-dart'), null);
   assert.deepEqual(engine.challengeSequenceProgress(['fisica-del-salto', 'algoritmo-secreto']), {
     completed: ['fisica-del-salto', 'algoritmo-secreto'],
-    total: 6,
+    total: 21,
     current: 'puerta-automatica'
   });
+});
+
+test('cada lenguaje nuevo tiene un reto seguro y una validación funcional', () => {
+  const languages = ['python', 'java', 'c', 'cpp', 'csharp', 'php', 'ruby', 'go', 'rust', 'kotlin', 'swift', 'typescript', 'sql', 'r', 'dart'];
+  for (const language of languages) {
+    const challenge = engine.challengeDefinitions.find((item) => item.slug === `reto-${language}`);
+    assert.ok(challenge, `Falta el reto de ${language}`);
+    assert.equal(engine.evaluateChallenge(challenge.slug, { code: challenge.starter }).isCorrect, true);
+    assert.equal(engine.evaluateChallenge(challenge.slug, { code: '' }).isCorrect, false);
+  }
 });
