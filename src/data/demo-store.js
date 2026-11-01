@@ -9,6 +9,27 @@ const courses = [
   { id: 8, title: 'Arreglos', description: 'Organiza colecciones de datos y recórrelas con confianza.', difficulty: 'Intermedio', estimated_minutes: 60, is_premium: 1 }
 ];
 
+// La biblioteca cubre los lenguajes más usados en formación y desarrollo profesional.
+// Cada curso nace con tres microlecciones para que el modo demo y MySQL compartan el mismo catálogo.
+const languageCourseData = [
+  { id: 9, name: 'Python', title: 'Python desde cero', description: 'Automatiza tareas y expresa ideas con una sintaxis clara.', difficulty: 'Inicial', estimated_minutes: 60 },
+  { id: 10, name: 'Java', title: 'Java esencial', description: 'Construye programas robustos con tipos, clases y métodos.', difficulty: 'Inicial', estimated_minutes: 65 },
+  { id: 11, name: 'C', title: 'C fundamental', description: 'Comprende memoria, tipos y control de bajo nivel.', difficulty: 'Intermedio', estimated_minutes: 70 },
+  { id: 12, name: 'C++', title: 'C++ práctico', description: 'Combina rendimiento, abstracciones y estructuras modernas.', difficulty: 'Intermedio', estimated_minutes: 70 },
+  { id: 13, name: 'C#', title: 'C# y .NET', description: 'Crea aplicaciones con clases, colecciones y herramientas .NET.', difficulty: 'Intermedio', estimated_minutes: 65 },
+  { id: 14, name: 'PHP', title: 'PHP para web', description: 'Genera páginas dinámicas y trabaja con datos del servidor.', difficulty: 'Inicial', estimated_minutes: 55 },
+  { id: 15, name: 'Ruby', title: 'Ruby expresivo', description: 'Resuelve problemas con una sintaxis legible y flexible.', difficulty: 'Inicial', estimated_minutes: 55 },
+  { id: 16, name: 'Go', title: 'Go concurrente', description: 'Aprende servicios rápidos con simplicidad y concurrencia.', difficulty: 'Intermedio', estimated_minutes: 65 },
+  { id: 17, name: 'Rust', title: 'Rust seguro', description: 'Explora rendimiento y seguridad de memoria desde el diseño.', difficulty: 'Avanzado', estimated_minutes: 80 },
+  { id: 18, name: 'Kotlin', title: 'Kotlin moderno', description: 'Escribe código conciso para backend y Android.', difficulty: 'Intermedio', estimated_minutes: 60 },
+  { id: 19, name: 'Swift', title: 'Swift para apps', description: 'Modela datos y crea lógica para el ecosistema Apple.', difficulty: 'Intermedio', estimated_minutes: 60 },
+  { id: 20, name: 'TypeScript', title: 'TypeScript con tipos', description: 'Haz proyectos JavaScript más claros y mantenibles.', difficulty: 'Intermedio', estimated_minutes: 60 },
+  { id: 21, name: 'SQL', title: 'SQL y datos', description: 'Consulta, filtra y relaciona información con precisión.', difficulty: 'Inicial', estimated_minutes: 50 },
+  { id: 22, name: 'R', title: 'R para análisis', description: 'Convierte datos en preguntas, gráficos y conclusiones.', difficulty: 'Intermedio', estimated_minutes: 60 },
+  { id: 23, name: 'Dart', title: 'Dart y Flutter', description: 'Prepara la lógica que alimenta experiencias multiplataforma.', difficulty: 'Intermedio', estimated_minutes: 60 }
+];
+courses.push(...languageCourseData.map(({ id, name, title, description, difficulty, estimated_minutes }) => ({ id, title, description, difficulty, estimated_minutes, is_premium: 0, language: name })));
+
 const lessonTitles = ['¿Qué es programar?', '¿Qué es un algoritmo?', 'Variables y tipos de datos', 'Operadores', 'Condicionales', 'Bucles', 'Funciones', 'Arreglos', 'Resolución de problemas', 'Primer proyecto práctico'];
 const lessonContent = [
   ['Reconocer la programación como una forma de dar instrucciones precisas.', 'Programar es escribir instrucciones para que una computadora resuelva una tarea. Como una receta, cada paso debe ser claro y estar en un orden útil.', 'const saludo = "Hola, SkillVerse";\nconsole.log(saludo);'],
@@ -36,9 +57,10 @@ const exerciseDefinitions = [
   ['Tipos en contexto', '¿Qué tipo de dato representa el texto "Alex"?', 'choice', { answer: 'texto' }, 'Está escrito entre comillas.', 'Un texto entre comillas es una cadena (string).', 10]
 ];
 
-const lessons = lessonTitles.map((title, index) => ({ id: index + 1, course_id: 1, title, objective: lessonContent[index][0], content: lessonContent[index][1], example_code: lessonContent[index][2], position: index + 1, estimated_minutes: 10 }));
-// Cada curso público debe tener contenido navegable también en modo demo.
-// Estos micro-módulos mantienen la vista previa alineada con el catálogo MySQL.
+const baseLessons = lessonTitles.map((title, index) => ({ id: index + 1, course_id: 1, title, objective: lessonContent[index][0], content: lessonContent[index][1], example_code: lessonContent[index][2], position: index + 1, estimated_minutes: 10 }));
+
+// El catálogo completo debe ser navegable incluso cuando Render trabaja en modo demo.
+// Cada ruta tiene tres microlecciones para que Aprender no termine en una tarjeta vacía.
 const learningModules = [
   { course_id: 2, lessons: [
     ['Sintaxis que da vida', 'Reconocer cómo una instrucción cambia el estado de una página.', 'JavaScript conecta datos, decisiones y acciones. Empieza leyendo de arriba abajo y nombra cada pieza con claridad.', 'const mensaje = "Hola";\nconsole.log(mensaje);'],
@@ -76,8 +98,37 @@ const learningModules = [
     ['Proyecto: colección de retos', 'Combinar arreglos, funciones y decisiones en una vista pequeña.', 'Una colección útil tiene datos claros, una transformación y un estado vacío pensado. Diseña primero el recorrido de la información.', 'const pendientes = retos.filter((reto) => !reto.completado);\nmostrar(pendientes);']
   ] }
 ];
-const extraLessons = learningModules.flatMap(({ course_id, lessons: moduleLessons }) => moduleLessons.map((lesson, index) => ({
-  id: 11 + (course_id - 2) * 3 + index,
+
+const languageModules = languageCourseData.map(({ id: course_id, name }) => ({ course_id, lessons: [
+  [`Primer programa en ${name}`, `Reconocer la estructura mínima de un programa escrito en ${name}.`, `${name} tiene una forma propia de iniciar un programa, pero la idea es la misma: recibir datos, transformarlos y producir un resultado. Lee el ejemplo y localiza la entrada y la salida.`, languageStarter(name)],
+  [`Datos y decisiones en ${name}`, `Usar variables y una decisión para expresar una regla en ${name}.`, `Las variables guardan información y las condiciones permiten elegir un camino. Practica con nombres descriptivos y prueba también el caso contrario.`, languageDecision(name)],
+  [`Pequeño proyecto con ${name}`, `Combinar una función y una colección para resolver una tarea concreta.`, `Un proyecto pequeño conecta conceptos: define una función, recorre algunos datos y devuelve un resultado verificable. Empieza con un caso sencillo antes de ampliarlo.`, languageProject(name)]
+] }));
+
+function languageStarter(name) {
+  const examples = {
+    Python: 'print("Hola, SkillVerse")', Java: 'class Main {\n  public static void main(String[] args) {\n    System.out.println("Hola");\n  }\n}', C: '#include <stdio.h>\nint main(void) { printf("Hola\\n"); return 0; }', 'C++': '#include <iostream>\nint main() { std::cout << "Hola"; }', 'C#': 'class Program {\n  static void Main() { System.Console.WriteLine("Hola"); }\n}', PHP: '<?php echo "Hola, SkillVerse"; ?>', Ruby: 'puts "Hola, SkillVerse"', Go: 'package main\nimport "fmt"\nfunc main() { fmt.Println("Hola") }', Rust: 'fn main() { println!("Hola, SkillVerse"); }', Kotlin: 'fun main() { println("Hola, SkillVerse") }', Swift: 'import Foundation\nprint("Hola, SkillVerse")', TypeScript: 'const mensaje: string = "Hola, SkillVerse";\nconsole.log(mensaje);', SQL: 'SELECT nombre FROM estudiantes;', R: 'mensaje <- "Hola, SkillVerse"\nprint(mensaje)', Dart: 'void main() { print("Hola, SkillVerse"); }'
+  };
+  return examples[name] || `// Primer programa en ${name}`;
+}
+
+function languageDecision(name) {
+  const examples = {
+    Python: 'edad = 18\nif edad >= 18:\n    print("Puede entrar")', Java: 'int edad = 18;\nif (edad >= 18) { System.out.println("Puede entrar"); }', C: 'int edad = 18;\nif (edad >= 18) { printf("Puede entrar"); }', 'C++': 'int edad = 18;\nif (edad >= 18) { std::cout << "Puede entrar"; }', 'C#': 'int edad = 18;\nif (edad >= 18) { System.Console.WriteLine("Puede entrar"); }', PHP: '$edad = 18;\nif ($edad >= 18) { echo "Puede entrar"; }', Ruby: 'edad = 18\nputs "Puede entrar" if edad >= 18', Go: 'edad := 18\nif edad >= 18 { fmt.Println("Puede entrar") }', Rust: 'let edad = 18;\nif edad >= 18 { println!("Puede entrar"); }', Kotlin: 'val edad = 18\nif (edad >= 18) println("Puede entrar")', Swift: 'let edad = 18\nif edad >= 18 { print("Puede entrar") }', TypeScript: 'const edad: number = 18;\nif (edad >= 18) console.log("Puede entrar");', SQL: 'SELECT nombre FROM estudiantes WHERE edad >= 18;', R: 'edad <- 18\nif (edad >= 18) print("Puede entrar")', Dart: 'final edad = 18;\nif (edad >= 18) print("Puede entrar");'
+  };
+  return examples[name] || `// Decisión en ${name}`;
+}
+
+function languageProject(name) {
+  const examples = {
+    Python: 'def total(numeros):\n    return sum(numeros)\nprint(total([2, 3]))', Java: 'static int total(int[] numeros) {\n  int total = 0;\n  for (int numero : numeros) total += numero;\n  return total;\n}', C: 'int total(int numeros[], int cantidad) {\n  int total = 0;\n  for (int i = 0; i < cantidad; i++) total += numeros[i];\n  return total;\n}', 'C++': 'int total(const std::vector<int>& numeros) {\n  return std::accumulate(numeros.begin(), numeros.end(), 0);\n}', 'C#': 'int Total(int[] numeros) => numeros.Sum();', PHP: 'function total(array $numeros): int { return array_sum($numeros); }', Ruby: 'def total(numeros)\n  numeros.sum\nend', Go: 'func total(numeros []int) int {\n  suma := 0\n  for _, numero := range numeros { suma += numero }\n  return suma\n}', Rust: 'fn total(numeros: &[i32]) -> i32 { numeros.iter().sum() }', Kotlin: 'fun total(numeros: List<Int>) = numeros.sum()', Swift: 'func total(_ numeros: [Int]) -> Int { numeros.reduce(0, +) }', TypeScript: 'function total(numeros: number[]): number { return numeros.reduce((a, b) => a + b, 0); }', SQL: 'SELECT SUM(valor) AS total FROM registros;', R: 'total <- function(numeros) sum(numeros)\ntotal(c(2, 3))', Dart: 'int total(List<int> numeros) => numeros.reduce((a, b) => a + b);'
+  };
+  return examples[name] || `// Proyecto en ${name}`;
+}
+
+const allLearningModules = [...learningModules, ...languageModules];
+const extraLessons = allLearningModules.flatMap(({ course_id, lessons: moduleLessons }) => moduleLessons.map((lesson, index) => ({
+  id: course_id <= 8 ? 11 + (course_id - 2) * 3 + index : 32 + (course_id - 9) * 3 + index,
   course_id,
   title: lesson[0],
   objective: lesson[1],
@@ -86,8 +137,24 @@ const extraLessons = learningModules.flatMap(({ course_id, lessons: moduleLesson
   position: index + 1,
   estimated_minutes: 10
 })));
-const allLessons = [...lessons, ...extraLessons];
-const exercises = exerciseDefinitions.map((item, index) => ({ id: index + 1, lesson_id: index + 1 <= 10 ? index + 1 : 3, title: item[0], instructions: item[1], exercise_type: item[2], validation_json: item[3], hint: item[4], feedback: item[5], xp_reward: item[6], difficulty: 'Inicial' }));
+const lessons = [...baseLessons, ...extraLessons];
+const languageExerciseTokens = {
+  Python: ['def', 'return'], Java: ['class', 'static void main'], C: ['#include', 'int main'], 'C++': ['#include', 'std::'], 'C#': ['class', 'static void main'], PHP: ['<?php', 'echo'], Ruby: ['def', 'end'], Go: ['package main', 'func main'], Rust: ['fn main', 'println!'], Kotlin: ['fun main', 'println'], Swift: ['print('], TypeScript: [': string', 'const'], SQL: ['select', 'from', 'where'], R: ['<-', 'print'], Dart: ['void main', 'print']
+};
+const baseExercises = exerciseDefinitions.map((item, index) => ({ id: index + 1, lesson_id: index + 1 <= 10 ? index + 1 : 3, title: item[0], instructions: item[1], exercise_type: item[2], validation_json: item[3], hint: item[4], feedback: item[5], xp_reward: item[6], difficulty: 'Inicial' }));
+const languageExercises = languageCourseData.map(({ id: course_id, name }, index) => ({
+  id: 12 + index,
+  lesson_id: 34 + index * 3,
+  title: `Escribe una base de ${name}`,
+  instructions: `Escribe una solución breve de ${name} que incluya su estructura principal.`,
+  exercise_type: 'code',
+  validation_json: { kind: 'tokens', tokens: languageExerciseTokens[name] },
+  hint: `Incluye: ${languageExerciseTokens[name].join(', ')}. Se valida la estructura, no se ejecuta el código.`,
+  feedback: `La estructura básica de ${name} está presente.`,
+  xp_reward: 20,
+  difficulty: 'Inicial'
+}));
+const exercises = [...baseExercises, ...languageExercises];
 const achievements = [
   { id: 1, name: 'Primer paso', description: 'Completa tu primera lección.', icon: '✦' },
   { id: 2, name: 'Mente lógica', description: 'Resuelve diez ejercicios correctamente.', icon: '⌘' },
@@ -96,6 +163,6 @@ const achievements = [
   { id: 5, name: 'Constructor', description: 'Completa tu primer proyecto.', icon: '◆' }
 ];
 
-const store = { users: [], courses, lessons: allLessons, exercises, achievements, progress: [], attempts: [], stats: new Map(), userAchievements: new Map(), nextUserId: 1 };
+const store = { users: [], courses, lessons, exercises, achievements, progress: [], attempts: [], stats: new Map(), userAchievements: new Map(), nextUserId: 1 };
 
-module.exports = { store, courses, lessons: allLessons, exercises, achievements };
+module.exports = { store, courses, lessons, exercises, achievements };
