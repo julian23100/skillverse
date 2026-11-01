@@ -1,5 +1,37 @@
 const clamp = (value, min, max) => Math.min(max, Math.max(min, Number(value)));
 
+const languageChallengeDefinitions = [
+  ['python', 'Python', 'Escribe una función que reciba una lista y devuelva su suma.', ['def', 'return'], 'def total(numeros): return sum(numeros)'],
+  ['java', 'Java', 'Escribe el punto de entrada de un programa Java.', ['class', 'static void main'], 'class Main { public static void main(String[] args) {} }'],
+  ['c', 'C', 'Escribe un programa C que tenga una función main.', ['#include', 'int main'], '#include <stdio.h>\nint main(void) { return 0; }'],
+  ['cpp', 'C++', 'Escribe un programa C++ que use la salida estándar.', ['#include', 'std::'], '#include <iostream>\nint main() { std::cout << "Hola"; }'],
+  ['csharp', 'C#', 'Escribe un punto de entrada en C#.', ['class', 'static void main'], 'class Program { static void Main() {} }'],
+  ['php', 'PHP', 'Escribe una salida sencilla desde PHP.', ['<?php', 'echo'], '<?php echo "Hola"; ?>'],
+  ['ruby', 'Ruby', 'Define una función Ruby que termine correctamente.', ['def', 'end'], 'def saludar\n  puts "Hola"\nend'],
+  ['go', 'Go', 'Escribe el programa mínimo ejecutable de Go.', ['package main', 'func main'], 'package main\nfunc main() {}'],
+  ['rust', 'Rust', 'Escribe el punto de entrada de un programa Rust.', ['fn main', 'println!'], 'fn main() { println!("Hola"); }'],
+  ['kotlin', 'Kotlin', 'Escribe una función main en Kotlin.', ['fun main', 'println'], 'fun main() { println("Hola") }'],
+  ['swift', 'Swift', 'Escribe una salida en Swift.', ['print('], 'print("Hola, SkillVerse")'],
+  ['typescript', 'TypeScript', 'Declara un texto con un tipo explícito.', [': string', 'const'], 'const mensaje: string = "Hola";'],
+  ['sql', 'SQL', 'Consulta los nombres de estudiantes adultos.', ['select', 'from', 'where'], 'SELECT nombre FROM estudiantes WHERE edad >= 18;'],
+  ['r', 'R', 'Crea un valor y muéstralo en R.', ['<-', 'print'], 'mensaje <- "Hola"\nprint(mensaje)'],
+  ['dart', 'Dart', 'Escribe el punto de entrada de Dart.', ['void main', 'print'], 'void main() { print("Hola"); }']
+].map(([slug, language, objective, requiredTokens, starter]) => ({
+  slug: `reto-${slug}`,
+  language,
+  kind: 'language',
+  symbol: '</>',
+  title: `Reto ${language}`,
+  level: 'Ruta de lenguajes',
+  xp: 70,
+  description: `Practica una solución breve y segura usando ${language}.`,
+  objective,
+  hint: `Incluye estas piezas en tu respuesta: ${requiredTokens.join(', ')}. No se ejecuta código; se valida la estructura.`,
+  explanation: `El reto comprueba la presencia de ${requiredTokens.join(', ')} para que puedas practicar la forma básica de ${language} sin ejecutar código enviado por estudiantes.`,
+  requiredTokens,
+  starter
+}));
+
 export const challengeDefinitions = [
   {
     slug: 'fisica-del-salto', symbol: '⌁', title: 'Física del salto', level: 'Inicial', xp: 80,
@@ -42,7 +74,8 @@ export const challengeDefinitions = [
     objective: 'Haz que el bucle sume 0 + 1 + 2 y produzca total = 3.',
     hint: 'El contador debe empezar en cero, avanzar hacia arriba y detenerse antes de 3.',
     explanation: 'El evaluador simula los pasos permitidos en lugar de ejecutar texto introducido por el usuario. Así comprueba la lógica sin usar eval ni ejecutar código arbitrario.'
-  }
+  },
+  ...languageChallengeDefinitions
 ];
 
 // Orden pedagógico explícito: la navegación no depende de títulos ni de IDs.
@@ -68,13 +101,25 @@ export const challengeDefaults = {
   'algoritmo-secreto': { x: 5, y: 2, answer: '', lastOutput: null },
   'circuito-logico': { inputA: true, inputB: false, gate: 'XOR', invert: false },
   equilibrio: { leftWeight: 4, leftDistance: 2, rightWeight: 8, rightDistance: 1 },
-  'depura-el-sistema': { initial: '0', condition: '<', increment: 'i++', operation: 'total += i' }
+  'depura-el-sistema': { initial: '0', condition: '<', increment: 'i++', operation: 'total += i' },
+  ...Object.fromEntries(languageChallengeDefinitions.map((challenge) => [challenge.slug, { code: '' }]))
 };
 
 export const physicsTarget = { x: 9, y: 6.5 };
 
 export function cloneDefault(slug) {
   return JSON.parse(JSON.stringify(challengeDefaults[slug]));
+}
+
+export function evaluateLanguageChallenge(slug, draft = {}) {
+  const challenge = languageChallengeDefinitions.find((item) => item.slug === slug);
+  if (!challenge) return { isCorrect: false, message: 'Reto no encontrado.' };
+  const source = String(draft.code || '').toLowerCase();
+  const isCorrect = source.trim().length > 0 && challenge.requiredTokens.every((token) => source.includes(token.toLowerCase()));
+  return {
+    isCorrect,
+    message: isCorrect ? `Estructura válida para ${challenge.language}.` : `Aún faltan piezas del reto de ${challenge.language}.`
+  };
 }
 
 export function normalizePhysics(params = {}) {
@@ -186,5 +231,6 @@ export function evaluateChallenge(slug, draft) {
   if (slug === 'circuito-logico') return evaluateCircuit(draft);
   if (slug === 'equilibrio') return evaluateBalance(draft);
   if (slug === 'depura-el-sistema') return evaluateDebug(draft);
+  if (languageChallengeDefinitions.some((challenge) => challenge.slug === slug)) return evaluateLanguageChallenge(slug, draft);
   return { isCorrect: false, message: 'Reto no encontrado.' };
 }
